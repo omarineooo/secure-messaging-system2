@@ -1,0 +1,212 @@
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+:root {
+  --panel: rgba(4, 15, 30, 0.85);
+  --line: rgba(56, 189, 248, 0.25);
+  --blue: #38bdf8;
+  --blue2: #0ea5e9;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --glow: 0 0 25px rgba(56, 189, 248, 0.18);
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top center, rgba(14,165,233,.14), transparent 25%),
+    radial-gradient(circle at bottom left, rgba(56,189,248,.10), transparent 30%),
+    linear-gradient(135deg, #020617 0%, #030712 45%, #061222 100%);
+  min-height: 100vh;
+}
+
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(56,189,248,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,.04) 1px, transparent 1px);
+  background-size: 38px 38px;
+  opacity: .35;
+  z-index: -1;
+}
+
+.topbar {
+  width: min(1200px, calc(100% - 32px));
+  margin: 18px auto 0;
+  padding: 18px 24px;
+  border: 1px solid var(--line);
+  background: rgba(3, 10, 20, 0.82);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--glow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, var(--blue2), #2563eb);
+  box-shadow: 0 0 18px rgba(14,165,233,.38);
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.brand p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nav a {
+  color: var(--text);
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 12px;
+  transition: .25s;
+  font-size: 14px;
+}
+
+.nav a:hover,
+.nav a.active {
+  background: rgba(56,189,248,.1);
+  color: var(--blue);
+}
+
+.container {
+  width: min(1200px, calc(100% - 32px));
+  margin: 28px auto 60px;
+}
+
+.hero {
+  text-align: center;
+  padding: 70px 20px 30px;
+}
+
+.eyebrow {
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.hero h2 {
+  margin: 0 0 16px;
+  font-size: clamp(34px, 5vw, 58px);
+}
+
+.hero p {
+  width: min(800px, 100%);
+  margin: 0 auto;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.9;
+}
+
+.hero-actions {
+  margin-top: 24px;
+}
+
+.primary-btn {
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.24);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--glow);
+  padding: 28px;
+  margin-top: 24px;
+}
+
+.panel h3 {
+  margin-top: 0;
+  color: var(--blue);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.step-card {
+  padding: 22px;
+  border-radius: 20px;
+  background: rgba(2, 6, 23, 0.65);
+  border: 1px solid rgba(56,189,248,.22);
+}
+
+.step-card h4 {
+  margin: 0 0 10px;
+  color: var(--blue);
+  font-size: 20px;
+}
+
+.step-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+@media (max-width: 980px) {
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero {
+    text-align: left;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hero p {
+    margin: 0;
+  }
+}

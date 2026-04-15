@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Secure Messaging System</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-overlay"></div>
+
+  <header class="topbar">
+    <div class="logo-wrap">
+      <div class="logo-shield">S</div>
+      <div>
+        <h1 class="site-title">Secure Messaging System</h1>
+        <p class="site-subtitle">User Dashboard</p>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/compose.html">Compose</a>
+      <a href="/inbox.html">Inbox</a>
+      <a href="/login.html" id="logoutBtn">Logout</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero dashboard-hero">
+      <p class="eyebrow">Authenticated Session</p>
+      <h2>Welcome, <span id="dashboardUsername">User</span></h2>
+      <p class="hero-text">
+        You are now inside the secure messaging dashboard. From here you will be able to
+        send encrypted messages, review inbox activity, and manage your secure account.
+      </p>
+    </section>
+
+    <section class="cards-row">
+      <div class="info-card">
+        <h3>Account Status</h3>
+        <p>Authenticated and connected to the secure messaging environment.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Encryption Mode</h3>
+        <p>RSA encryption will be used for secure communication between users.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Next Step</h3>
+        <p>Inbox and compose pages will now be connected to real encrypted message flows.</p>
+      </div>
+    </section>
+
+    <section class="panel two-col">
+      <div class="panel-box">
+        <h3>User Information</h3>
+        <ul class="info-list">
+          <li><strong>Username:</strong> <span id="userInfoName">-</span></li>
+          <li><strong>Session:</strong> Active</li>
+          <li><strong>Security:</strong> Password protected with bcrypt</li>
+          <li><strong>Encryption:</strong> RSA</li>
+        </ul>
+      </div>
+
+      <div class="panel-box">
+        <h3>System Overview</h3>
+        <p>
+          This dashboard is the main access point after successful authentication.
+          It confirms that the user exists in the database and can proceed to use
+          the secure messaging features of the system.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

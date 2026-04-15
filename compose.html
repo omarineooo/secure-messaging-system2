@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compose | Secure Messaging System</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .page-wrap {
+      width: min(1100px, calc(100% - 32px));
+      margin: 28px auto 60px;
+    }
+
+    .page-hero {
+      text-align: center;
+      padding: 40px 20px 24px;
+    }
+
+    .page-hero .eyebrow {
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    .page-hero h2 {
+      margin: 0 0 16px;
+      font-size: clamp(34px, 5vw, 58px);
+    }
+
+    .page-hero p {
+      width: min(760px, 100%);
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.9;
+    }
+
+    .compose-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--glow);
+      padding: 28px;
+      margin-top: 24px;
+    }
+
+    .compose-card h3 {
+      margin-top: 0;
+      color: var(--blue);
+      font-size: 28px;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      background: rgba(2, 6, 23, 0.88);
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+    }
+
+    .form-group textarea {
+      min-height: 180px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+    }
+
+    .primary-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      background: linear-gradient(135deg, #0ea5e9, #2563eb);
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.24);
+    }
+
+    .form-message {
+      min-height: 22px;
+      margin: 14px 0 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">S</div>
+      <div>
+        <h1>Secure Messaging System</h1>
+        <p>Compose Message</p>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="project.html">Project</a>
+      <a href="team.html">Team</a>
+      <a href="login.html">Login</a>
+      <a href="compose.html" class="active">Compose</a>
+      <a href="inbox.html">Inbox</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="page-hero">
+      <p class="eyebrow">New Message</p>
+      <h2>Compose</h2>
+      <p>Send a private message to any registered username.</p>
+    </section>
+
+    <section class="compose-card">
+      <h3>Send Message</h3>
+
+      <div class="form-group">
+        <label for="to">To Username</label>
+        <input id="to" type="text" placeholder="Enter receiver username" />
+      </div>
+
+      <div class="form-group">
+        <label for="msg">Message</label>
+        <textarea id="msg" placeholder="Write your message here..."></textarea>
+      </div>
+
+      <button class="primary-btn" onclick="sendMessage()">Send Message</button>
+      <p id="sendMessageStatus" class="form-message"></p>
+    </section>
+  </main>
+
+  <script>
+    async function sendMessage() {
+      const from = localStorage.getItem("user");
+      const to = document.getElementById("to").value.trim();
+      const message = document.getElementById("msg").value.trim();
+      const status = document.getElementById("sendMessageStatus");
+
+      if (!from) {
+        status.textContent = "Please login first";
+        status.style.color = "red";
+        return;
+      }
+
+      if (!to || !message) {
+        status.textContent = "Please fill all fields";
+        status.style.color = "red";
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ from, to, message })
+        });
+
+        const data = await res.json();
+
+        status.textContent = data.message;
+        status.style.color = data.success ? "lightgreen" : "red";
+
+        if (data.success) {
+          document.getElementById("to").value = "";
+          document.getElementById("msg").value = "";
+        }
+      } catch (error) {
+        status.textContent = "Send failed";
+        status.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>

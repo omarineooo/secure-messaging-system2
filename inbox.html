@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inbox | Secure Messaging System</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .page-wrap {
+      width: min(1100px, calc(100% - 32px));
+      margin: 28px auto 60px;
+    }
+
+    .page-hero {
+      text-align: center;
+      padding: 40px 20px 24px;
+    }
+
+    .page-hero .eyebrow {
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    .page-hero h2 {
+      margin: 0 0 16px;
+      font-size: clamp(34px, 5vw, 58px);
+    }
+
+    .page-hero p {
+      width: min(760px, 100%);
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.9;
+    }
+
+    .inbox-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--glow);
+      padding: 28px;
+      margin-top: 24px;
+    }
+
+    .messages-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .message-card {
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      background: rgba(2, 6, 23, 0.65);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .message-card strong {
+      color: var(--blue);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .message-card p {
+      margin: 0;
+      color: var(--text);
+      line-height: 1.7;
+      word-break: break-word;
+    }
+
+    .empty-state {
+      color: var(--muted);
+      text-align: center;
+      padding: 20px 0 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">S</div>
+      <div>
+        <h1>Secure Messaging System</h1>
+        <p>Your Inbox</p>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="project.html">Project</a>
+      <a href="team.html">Team</a>
+      <a href="login.html">Login</a>
+      <a href="compose.html">Compose</a>
+      <a href="inbox.html" class="active">Inbox</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="page-hero">
+      <p class="eyebrow">Private Messages</p>
+      <h2>Inbox</h2>
+      <p>Read the messages sent to your account.</p>
+    </section>
+
+    <section class="inbox-card">
+      <div id="box" class="messages-list"></div>
+    </section>
+  </main>
+
+  <script>
+    async function loadInbox() {
+      const user = localStorage.getItem("user");
+      const box = document.getElementById("box");
+
+      if (!user) {
+        box.innerHTML = `<div class="empty-state">Please login first.</div>`;
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/inbox/" + user);
+        const data = await res.json();
+
+        if (!data.length) {
+          box.innerHTML = `<div class="empty-state">No messages yet.</div>`;
+          return;
+        }
+
+        box.innerHTML = "";
+
+        data.forEach((m) => {
+          box.innerHTML += `
+            <div class="message-card">
+              <strong>From: ${m.sender}</strong>
+              <p>${m.message}</p>
+            </div>
+          `;
+        });
+      } catch (error) {
+        box.innerHTML = `<div class="empty-state">Failed to load inbox.</div>`;
+      }
+    }
+
+    loadInbox();
+  </script>
+</body>
+</html>
