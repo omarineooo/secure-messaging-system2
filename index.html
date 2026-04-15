@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSecure RSA | Official Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-blue: #00d4ff;
+            --glass: rgba(10, 10, 10, 0.85);
+            --card-bg: rgba(20, 20, 20, 0.95);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), 
+                              url('https://raw.githubusercontent.com/omarineooo/secure-messaging-system/main/bg.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #000;
+            color: white;
+            font-family: 'Fira Code', monospace;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom: 2px solid var(--main-blue);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .nav-links { display: flex; gap: 35px; }
+
+        .nav-item {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .nav-item:hover, .nav-item.active { 
+            color: var(--main-blue); 
+            text-shadow: 0 0 15px var(--main-blue); 
+        }
+
+        .content-section {
+            display: none;
+            padding: 50px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .content-section.active { 
+            display: block; 
+            animation: slideUp 0.7s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.1);
+        }
+
+        h1 { color: var(--main-blue); text-align: center; margin-bottom: 35px; font-size: 1.8rem; letter-spacing: 2px; }
+
+        /* Project Styles */
+        textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #333;
+            color: var(--main-blue);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            outline: none;
+            font-size: 1.1rem;
+            resize: none;
+        }
+
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; }
+        button {
+            flex: 1; padding: 16px; border: none; border-radius: 12px;
+            cursor: pointer; font-weight: bold; font-family: inherit; transition: 0.3s;
+        }
+        .btn-encrypt { background: var(--main-blue); color: black; }
+        .btn-clear { background: #ff4444; color: white; }
+
+        .result-card {
+            background: rgba(5, 5, 5, 0.9);
+            border-left: 5px solid var(--main-blue);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Team Styles */
+        .team-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+        .member-card {
+            background: #0a0a0a;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #222;
+            text-align: left;
+            transition: 0.3s;
+        }
+        .member-card:hover { border-color: var(--main-blue); transform: translateY(-5px); }
+        .member-card h3 { color: var(--main-blue); font-size: 1.1rem; margin-bottom: 5px; }
+        .member-card .id-tag { color: #888; font-size: 0.85rem; margin-bottom: 10px; display: block; }
+        .member-card .role { color: #fff; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
+
+        /* Info Styles */
+        .info-step { margin-bottom: 25px; border-left: 2px solid var(--main-blue); padding-left: 20px; }
+        .info-step h4 { color: var(--main-blue); margin-bottom: 8px; }
+        .info-step p { color: #ccc; font-size: 0.95rem; line-height: 1.6; }
+
+        .footer { text-align: center; padding: 40px; color: #444; font-size: 0.7rem; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-links">
+        <a id="nav-project" class="nav-item active" onclick="showTab('project')">The Project</a>
+        <a id="nav-team" class="nav-item" onclick="showTab('team')">Team Members</a>
+        <a id="nav-info" class="nav-item" onclick="showTab('info')">How it was built</a>
+    </div>
+</nav>
+
+<section id="project" class="content-section active">
+    <div class="glass-panel">
+        <h1>🛡️ RSA ENCRYPTION ENGINE</h1>
+        <textarea id="messageInput" rows="3" placeholder="Enter sensitive message to encrypt..."></textarea>
+        <div class="btn-group">
+            <button class="btn-encrypt" onclick="executeRSA()">EXECUTE RSA PROCESS 🔒</button>
+            <button class="btn-clear" onclick="resetRSA()">CLEAR 🗑️</button>
+        </div>
+        <div id="step1" class="result-card">
+            <small style="color:#555;">[TRANSFERRED CIPHERTEXT]</small>
+            <div id="outEnc" style="color:var(--main-blue); word-break:break-all; margin-top:5px;"></div>
+        </div>
+        <div id="step2" class="result-card" style="border-left-color: white;">
+            <small style="color:#555;">[DECRYPTED PLAINTEXT]</small>
+            <div id="outDec" style="color:white; margin-top:5px;"></div>
+        </div>
+    </div>
+</section>
+
+<section id="team" class="content-section">
+    <div class="glass-panel">
+        <h1>👥 Development Team</h1>
+        <div class="team-grid">
+            <div class="member-card">
+                <h3>Omar Mohammed Fahim</h3>
+                <span class="id-tag">ID: 2520652</span>
+                <p class="role">Team Leader & Project Manager</p>
+            </div>
+            <div class="member-card">
+                <h3>Omar Mahmoud Basili</h3>
+                <span class="id-tag">ID: 2520654</span>
+                <p class="role">HTML Semantics & JS Core Logic</p>
+            </div>
+            <div class="member-card">
+                <h3>Fatima Mohammed Atallah</h3>
+                <span class="id-tag">ID: 2520687</span>
+                <p class="role">CSS Expert & Responsiveness</p>
+            </div>
+            <div class="member-card">
+                <h3>Salma Mohamed Ibrahim</h3>
+                <span class="id-tag">ID: 2520475</span>
+                <p class="role">API Integration & Dynamic Content</p>
+            </div>
+            <div class="member-card">
+                <h3>Aya Mohamed Mahmoud</h3>
+                <span class="id-tag">ID: 2520010</span>
+                <p class="role">Testing & Bug Fixing Specialist</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="info" class="content-section">
+    <div class="glass-panel">
+        <h1>📖 Project Development Stages</h1>
+        
+        <div class="info-step">
+            <h4>Stage 1: Architecture & UI Design</h4>
+            <p>We started by defining the Cyber-Theme identity. Using Glassmorphism and CSS Blur effects to create a professional security interface.</p>
+        </div>
+
+        <div class="info-step">
+            <h4>Stage 2: Core Logic Implementation</h4>
+            <p>Developing the RSA-simulation using JavaScript. We focused on handling Base64 encoding/decoding to represent secure data transmission.</p>
+        </div>
+
+        <div class="info-step">
+            <h4>Stage 3: Cloud Assets Integration</h4>
+            <p>To ensure 100% stability, we migrated local image assets to Raw GitHub URLs, ensuring the background loads instantly on any server.</p>
+        </div>
+
+        <div class="info-step">
+            <h4>Stage 4: Interactive Presentation Layer</h4>
+            <p>Adding the Single Page Application (SPA) navigation and timed result reveals to make the project suitable for live demonstrations.</p>
+        </div>
+    </div>
+</section>
+
+<div class="footer">BUT - IT Department - 2026 Innovation Project</div>
+
+<script>
+    function showTab(id) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('nav-' + id).classList.add('active');
+    }
+
+    function executeRSA() {
+        const val = document.getElementById('messageInput').value;
+        if(!val.trim()) return;
+        const enc = btoa(unescape(encodeURIComponent(val)));
+        document.getElementById('step1').style.display = 'block';
+        document.getElementById('outEnc').innerText = "RSA_SEC_KEY_" + enc;
+        setTimeout(() => {
+            document.getElementById('step2').style.display = 'block';
+            document.getElementById('outDec').innerText = val;
+        }, 600);
+    }
+
+    function resetRSA() {
+        document.getElementById('messageInput').value = '';
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
