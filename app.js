@@ -12,23 +12,23 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 const db = new sqlite3.Database(path.join(__dirname, "../database.db"));
 
-// CREATE USERS TABLE
+// USERS TABLE
 db.run(`
-  CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL
-  )
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE,
+  password TEXT
+)
 `);
 
-// CREATE MESSAGES TABLE
+// MESSAGES TABLE
 db.run(`
-  CREATE TABLE IF NOT EXISTS messages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    sender TEXT NOT NULL,
-    receiver TEXT NOT NULL,
-    message TEXT NOT NULL
-  )
+CREATE TABLE IF NOT EXISTS messages (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  sender TEXT,
+  receiver TEXT,
+  message TEXT
+)
 `);
 
 // REGISTER
@@ -53,11 +53,11 @@ app.post("/api/register", async (req, res) => {
           return res.json({ success: false, message: "Username already exists" });
         }
 
-        return res.json({ success: true, message: "Registered successfully" });
+        res.json({ success: true, message: "Registered successfully" });
       }
     );
   } catch (error) {
-    return res.json({ success: false, message: "Register failed" });
+    res.json({ success: false, message: "Register failed" });
   }
 });
 
@@ -87,7 +87,7 @@ app.post("/api/login", (req, res) => {
         return res.json({ success: false, message: "Wrong password" });
       }
 
-      return res.json({ success: true, message: "Login success" });
+      res.json({ success: true, message: "Login success" });
     }
   );
 });
@@ -117,7 +117,7 @@ app.post("/api/send", (req, res) => {
           return res.json({ success: false, message: "Send failed" });
         }
 
-        return res.json({ success: true, message: "Message sent successfully" });
+        res.json({ success: true, message: "Message sent successfully" });
       }
     );
   });
@@ -135,13 +135,11 @@ app.get("/api/inbox/:username", (req, res) => {
         return res.json([]);
       }
 
-      return res.json(rows || []);
+      res.json(rows || []);
     }
   );
 });
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on http://0.0.0.0:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
